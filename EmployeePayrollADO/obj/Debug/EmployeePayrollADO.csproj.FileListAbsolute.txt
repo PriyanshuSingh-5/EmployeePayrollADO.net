@@ -1,0 +1,7 @@
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\obj\Debug\EmployeePayrollADO.csprojAssemblyReference.cache
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\obj\Debug\EmployeePayrollADO.csproj.CoreCompileInputs.cache
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\bin\Debug\EmployeePayrollADO.exe.config
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\bin\Debug\EmployeePayrollADO.exe
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\bin\Debug\EmployeePayrollADO.pdb
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\obj\Debug\EmployeePayrollADO.exe
+C:\Users\K.R.DHASHNIGA\source\repos\EmployeePayrollADO\EmployeePayrollADO\obj\Debug\EmployeePayrollADO.pdb
