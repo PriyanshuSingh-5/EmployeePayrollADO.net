@@ -43,8 +43,10 @@ namespace EmployeePayrollADO
 
             repository.AddEmployee(model);
 
-            Console.WriteLine(repository.UpdateSalaryIntoDatabase("Priyanshu", 50000) ? "Update done successfully " : "Update Failed");
-            repository.GetEmployeesFromForDateRange("2018 - 05 - 03");
+            //Console.WriteLine(repository.UpdateSalaryIntoDatabase("Priyanshu", 50000) ? "Update done successfully " : "Update Failed");
+            //repository.GetEmployeesFromForDateRange("2018 - 05 - 03");
+            repository.FindGroupedByGenderData("M");
+            Console.ReadKey();
         }
     }
 }
