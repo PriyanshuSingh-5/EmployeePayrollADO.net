@@ -45,8 +45,12 @@ namespace EmployeePayrollADO
 
             //Console.WriteLine(repository.UpdateSalaryIntoDatabase("Priyanshu", 50000) ? "Update done successfully " : "Update Failed");
             //repository.GetEmployeesFromForDateRange("2018 - 05 - 03");
-            repository.FindGroupedByGenderData("M");
-            Console.ReadKey();
+            //repository.FindGroupedByGenderData("M");
+            //Console.ReadKey();
+            /// UC7 Inserts data into multiple tables using transactions.
+            //repository.InsertIntoMultipleTablesWithTransactions();
+            ///UC8 Retrieves the employee details from multiple tables after implementing E - R concept.
+            repository.RetrieveEmployeeDetailsFromMultipleTables();
         }
     }
 }
