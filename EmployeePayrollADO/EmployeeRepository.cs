@@ -20,21 +20,23 @@ namespace EmployeePayrollADO
         SqlConnection connection2 = new SqlConnection(connectionString);
 
 
-       
+
         ///UC1 Creating a method for checking for the validity of the connection.
-        
+
         public void EnsureDataBaseConnection()
         {
-            this.connection2.Open();
+            /// Creates a new connection for every method to avoid "ConnectionString property not initialized" exception
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
             using (connection)
             {
                 Console.WriteLine("The Connection is created");
             }
-            this.connection2.Close();
+            connection.Close();
         }
-        
+
         /// UC2 Ability for Employee Payroll Service to retrieve the Employee Payroll from the Database
-        
+
         public void GetAllEmployeeData()
         {
             //Creating Employee model class object
@@ -138,6 +140,44 @@ namespace EmployeePayrollADO
             }
 
         }
+
+        /// UC3 Updates the given empname with given salary into database.
+        /// </summary>
+        /// <param name="empName"></param>
+        /// <param name="basicPay"></param>
+        /// <returns></returns>
+        public bool UpdateSalaryIntoDatabase(string empName, double basicPay)
+        {
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
+            try
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    string query = @"update dbo.employee_payroll set basic_pay=@p1 where EmpName=@p2";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@p1", basicPay);
+                    command.Parameters.AddWithValue("@p2", empName);
+                    var result = command.ExecuteNonQuery();
+                    connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }
+
 

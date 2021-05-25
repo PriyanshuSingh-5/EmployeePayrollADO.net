@@ -10,7 +10,7 @@ namespace EmployeePayrollADO
     {
         static void Main(string[] args)
         {
-           
+
             Console.WriteLine("Welcome to Employee Payroll Services Using ADO.NET");
             //Creating a instance object of EmployeeRepository class.
             EmployeeRepository repository = new EmployeeRepository();
@@ -42,6 +42,8 @@ namespace EmployeePayrollADO
             model.TaxablePay = 500;
 
             repository.AddEmployee(model);
+
+            Console.WriteLine(repository.UpdateSalaryIntoDatabase("Priyanshu", 50000) ? "Update done successfully " : "Update Failed");
         }
     }
 }
