@@ -8,21 +8,14 @@ using System.Threading.Tasks;
 
 namespace EmployeePayrollADO
 {
-    class EmployeeRepository
+    public class EmployeeRepository
     {
-        ///Specifying the connection string from the sql server connection.
-        public static string connectionString = @"Data Source=LAPTOP-NAVJ6800\SQLEXPRESS;Initial Catalog=Employee_payroll;Integrated Security=True";
-        /// Establishing the connection using the Sql
-        SqlConnection connection = new SqlConnection(connectionString);
+        /// Ensuring the established connection using the Sql Connection specifying the property.
+        public static SqlConnection connection { get; set; }
 
-        SqlConnection connection1 = new SqlConnection(connectionString);
-        //ReInitiallizing the connection using the sql for update employee method.
-        SqlConnection connection2 = new SqlConnection(connectionString);
-
-
-
+        
         ///UC1 Creating a method for checking for the validity of the connection.
-
+       
         public void EnsureDataBaseConnection()
         {
             /// Creates a new connection for every method to avoid "ConnectionString property not initialized" exception
@@ -34,23 +27,24 @@ namespace EmployeePayrollADO
             }
             connection.Close();
         }
-
+        
         /// UC2 Ability for Employee Payroll Service to retrieve the Employee Payroll from the Database
-
-        public void GetAllEmployeeData()
+       
+        public void GetAllEmployeeData(string query)
         {
+            /// Creates a new connection for every method to avoid "ConnectionString property not initialized" exception
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
             //Creating Employee model class object
             EmployeeModel employee = new EmployeeModel();
             try
             {
-                using (connection1)
+                using (connection)
                 {
-                    //Query to get all the data from table.
-                    string query = @"select * from dbo.Employee_Data";
                     //Opening the connection to the statrt mapping.
-                    this.connection1.Open();
+                    connection.Open();
                     //Implementing the command on the connection fetched database table.
-                    SqlCommand command = new SqlCommand(query, connection1);
+                    SqlCommand command = new SqlCommand(query, connection);
                     //Executing the Sql datareaeder to fetch the all records.
                     SqlDataReader dataReader = command.ExecuteReader();
                     //Checking datareader has rows or not.
@@ -93,21 +87,23 @@ namespace EmployeePayrollADO
             //Always ensuring the closing of the connection
             finally
             {
-                this.connection1.Close();
+                connection.Close();
             }
 
         }
-        
+       
         /// Adding Employee To Database
        
-        public void AddEmployee(EmployeeModel model)
-        {
+        public bool AddEmployee(EmployeeModel model)
+        { /// Creates a new connection for every method to avoid "ConnectionString property not initialized" exception
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
             try
             {
-                using (this.connection)
+                using (connection)
                 {
                     //Creating a stored Procedure for adding employees into database
-                    SqlCommand command = new SqlCommand("dbo.Employee_Daata", this.connection);
+                    SqlCommand command = new SqlCommand("dbo.SpAddEmployeeDetails", connection);
                     //Command type is set as stored procedure
                     command.CommandType = CommandType.StoredProcedure;
                     //Adding values from employeemodel to stored procedure using disconnected architecture
@@ -127,7 +123,11 @@ namespace EmployeePayrollADO
                     var result = command.ExecuteNonQuery();
                     connection.Close();
 
-                   
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -140,12 +140,9 @@ namespace EmployeePayrollADO
             }
 
         }
-
+        
         /// UC3 Updates the given empname with given salary into database.
-        /// </summary>
-        /// <param name="empName"></param>
-        /// <param name="basicPay"></param>
-        /// <returns></returns>
+        
         public bool UpdateSalaryIntoDatabase(string empName, double basicPay)
         {
             DBConnection dbc = new DBConnection();
@@ -177,7 +174,40 @@ namespace EmployeePayrollADO
                 connection.Close();
             }
         }
+        
+        /// UC 4  Reads the updated salary from database.
+        
+        public double UpdatedSalaryFromDatabase(string empName)
+        {
+            DBConnection dbc = new DBConnection();
+            connection = dbc.GetConnection();
+            try
+            {
+                using (connection)
+                {
+                    string query = @"select basic_pay from dbo.employee_payroll where EmpName=@p1";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    connection.Open();
+                    command.Parameters.AddWithValue("@p1", empName);
+                    return (double)command.ExecuteScalar();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+       
+        /// UC5 Gets the employees details for a particular date range.
+       
+        public void GetEmployeesFromForDateRange(string date)
+        {
+            string query = $@"select * from dbo.employee_payroll where StartDate between cast('{date}' as date) and cast(getdate() as date)";
+            GetAllEmployeeData(query);
+        }
     }
 }
-
-

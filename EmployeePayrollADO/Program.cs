@@ -17,7 +17,7 @@ namespace EmployeePayrollADO
 
             // UC1 Ensuring the database connection using the sql connection string
             //  repository.EnsureDataBaseConnection();
-            repository.GetAllEmployeeData();
+            //repository.GetAllEmployeeData();
             //repository.AddEmployee();
 
             Inputdata();
@@ -44,6 +44,7 @@ namespace EmployeePayrollADO
             repository.AddEmployee(model);
 
             Console.WriteLine(repository.UpdateSalaryIntoDatabase("Priyanshu", 50000) ? "Update done successfully " : "Update Failed");
+            repository.GetEmployeesFromForDateRange("2018 - 05 - 03");
         }
     }
 }
